@@ -7,7 +7,6 @@ import { EMPTY_REGISTER } from '../../../campaign-state/divergenceRegister';
 import { isBlockEnabled } from '../../blockEnablement';
 import { hasHostModelRole } from '../../hostFacade';
 import { emitCoreEvent } from '../../../mods/events';
-import { runCombinedSeal } from '../../postTurnPipeline';
 import type { TurnCallbacks } from '../../turnOrchestrator';
 import type { PostTurnTrack, PostCommitTrackContext } from '../types';
 import { assertStillActive, makeGuarded } from '../guarded';
@@ -70,6 +69,7 @@ export const chapterSealTrack: PostTurnTrack<PostCommitTrackContext> = {
                 ? (request) => ctx.facade!.model.call('story', request).then(result => result.content)
                 : undefined;
             if ((sealProvider || sealModelCall) && isBlockEnabled('sealChapter', ctx.facade?.config.aiTier ?? ctx.state.settings.aiTier, ctx.facade?.config.moduleEnabled ?? ctx.state.settings.moduleEnabled)) {
+                const { runCombinedSeal } = await import('../../postTurnPipeline');
                 await runCombinedSeal(
                     sealProvider,
                     sealResult.sealedChapter,

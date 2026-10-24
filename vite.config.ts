@@ -21,6 +21,8 @@ export default defineConfig({
   base: './',
   server: {
     host: process.env.HOST || '127.0.0.1',
+    port: 5173,
+    strictPort: true,
     // The dev server serves any file under the project root, and `data/` is
     // under the project root: settings.json, apikeys.vault, embeddings.db and
     // every campaign were reachable at http://localhost:5173/data/… (with a
